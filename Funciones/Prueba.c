@@ -40,6 +40,8 @@ int main (void)
 
 double leerDato (double min, double max){
 
+    //Cambiar a IF
+
     double scan;
     do{
         printf("Introduzca un valor real comprendido entre %.2f y %.2f \n", min, max);
