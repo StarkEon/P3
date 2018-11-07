@@ -46,7 +46,11 @@ double leerDato (double min, double max){
     do{
         printf("Introduzca un valor real comprendido entre %.2f y %.2f \n", min, max);
         scanf("%lf", &scan);
-    }while(scan <= min || scan >= max);
+        if (scan < min || scan > max)
+        {
+            printf("ERROR: Valor fuera de rango \n");
+        }
+    }while(scan < min || scan > max);
 
     return(scan);
 
