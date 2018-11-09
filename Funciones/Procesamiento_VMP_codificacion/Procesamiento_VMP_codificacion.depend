@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1541796846 source:d:\stark\desktop\practicasprogramacion\p3 git\funciones\procesamiento_vmp.c
+	<stdio.h>
+	<string.h>
+
