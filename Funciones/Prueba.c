@@ -40,7 +40,6 @@ int main (void)
 
 double leerDato (double min, double max){
 
-    //Cambiar a IF
 
     double scan;
     do{
