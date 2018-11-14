@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1542210372 source:c:\users\stark\documents\github\p3\funciones\procesamientorec\procesamientorecprueba.c
+	<stdio.h>
+	<string.h>
+

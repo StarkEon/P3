@@ -1,9 +1,11 @@
 #include <stdio.h>
+#include <string.h>
 #define MIN_HDL 20.0
 #define MAX_HDL 80.0
 
 #define MIN_LDL 100.0
 #define MAX_LDL 220.0
+#define MAX_CAD 30
 double leerDato (double min, double max);
 
 //NO MODIFICAR RIESGO
@@ -13,24 +15,24 @@ double riesgo (double ldl, double hdl, char* hayRiesgo);
 
 int main(void)
 {
-    double hdl = leerDato(MIN_HDL, MAX_HDL);
-    double ldl = leerDato(MIN_LDL, MAX_LDL);
-    char hayriesgo;
-    double numeroriesgo = riesgo(ldl,hdl,&hayriesgo);
-    printf("%c %.2f", hayriesgo, numeroriesgo);
+    double hdl1 = leerDato(MIN_HDL, MAX_HDL);
+    double ldl1 = leerDato(MIN_LDL, MAX_LDL);
+    char hayriesgo[MAX_CAD];
+    double numeroriesgo = riesgo(ldl1,hdl1,&hayriesgo);
+    printf("%s %.2f", hayriesgo, numeroriesgo);
     return(0);
 }
 
-double riesgo (double ldl, double hdl, char* hayRiesgo)
+double riesgo (double ldl, double hdl, char *hayRiesgo)
 {
     double riesgo = ldl/hdl;
     if (riesgo > 3)
     {
-        *hayRiesgo = "Hay riesgo cardiovascular ya que el indice de riesgo es";
+        strcpy (hayRiesgo, "Hay riesgo cardiovascular");
     }
     else
     {
-        *hayRiesgo = "No hay riesgo cardiovascular ya que el indice de riesgo es";
+        strcpy (hayRiesgo,"No hay riesgo cardiovascular");
     }
     return(riesgo);
 }
