@@ -6,7 +6,8 @@
  * Para cada una, se pedirán los datos, se realizará el cálculo y se mostrará
  * el resultado por pantalla.
  *
- * Programadores: (Nombre y apellidos de los 2 miembros del grupo)
+ * Programadores: Luis Ignacio de Benito Ochoa
+                  Angie Maza González
  * Fecha: Octubre 2018
  *
  *****************************************************************************************/
@@ -147,9 +148,11 @@ double riesgo (double ldl, double hdl, char* hayRiesgo);
         Recibe el peso y la altura y devuelve el Indice de Masa Corporal
  Algoritmo:
  	Parámetros de entrada:
- 	Precondiciones:
- 	Parámetros de salida:
- 	Parámetro de salida (valor devuelto por la función):
+        peso: peso en Kilos
+        talla: talla en metros
+ 	Precondiciones: peso y talla dentro de los rangos válidos.
+ 	Parámetros de salida: ninguno
+ 	Parámetro de salida (valor devuelto por la función): El valor del IMC
  ***************************************************************************************/
    double indiceMC(double peso,double talla);
 
@@ -160,24 +163,28 @@ double riesgo (double ldl, double hdl, char* hayRiesgo);
         el porcentaje de masa corporal
  Algoritmo:
  	Parámetros de entrada:
- 	Precondiciones:
- 	Parámetros de salida:
- 	Parámetro de salida (valor devuelto por la función):
+        IMC: Valor de Indice de Masa Corporal
+        edad: edad de la persona en años.
+        sexo: sexo de la persona.
+ 	Precondiciones: Valores dentro de los rangos válidos y valor de la cadena sexo sea "hombre" o "mujer".
+ 	Parámetros de salida: ninguno
+ 	Parámetro de salida (valor devuelto por la función): valor del porcentaje de grasa corporal
  ***************************************************************************************/
-           grasaCorporal (    );
+ double grasaCorporal(double IMC, double edad, const char sexo[]);
 
 
 /**************************************************************************************
- Función: pesoMes
+ Función: pesosMes
         Lee de la entrada estándar los pesos registrados en un mes y los almacena en un
         array de tamaño VECES_PESO
  Algoritmo:
- 	Parámetros de entrada:
-    Precondiciones:
+ 	Parámetros de entrada: ninguno
+    Precondiciones: existencia de un array de tamaño VECES_PESO en la función llamante
  	Parámetros de salida:
- 	Parámetro de salida (valor devuelto por la función):
+        pesos: array de pesos registrados en un mes
+ 	Parámetro de salida (valor devuelto por la función): ninguno
  ***************************************************************************************/
-          pesosMes (      );
+ void pesosMes(double pesos[VECES_PESO]);
 
 
 /**************************************************************************************
@@ -185,12 +192,15 @@ double riesgo (double ldl, double hdl, char* hayRiesgo);
         Recibe la serie de pesos del mes y calcula y devuelve el peso máximo y el mínimo
  Algoritmo:
  	Parámetros de entrada:
-    Precondiciones:
- 	Parámetros de salida:
- 	Parámetro de salida (valor devuelto por la función):
- ***************************************************************************************/
-            pesoMinMax (          );
+        pesos: array de pesos registrados en un mes
 
+    Precondiciones: ejecución de la función pesosMes (llenar el array con caracteres válidos)
+ 	Parámetros de salida:
+        pesomin : el valor mínimo almacenado en el array pesos[]
+        pesomax : el valor máximo almacenado en el array pesos[]
+ 	Parámetro de salida (valor devuelto por la función): ninguno
+ ***************************************************************************************/
+ void pesoMinMax(const double pesos[], double *pesomin, double *pesomax);
 
 
  /* Función principal */
@@ -238,7 +248,12 @@ return 0;
 /* Codificación completa de menu  */
 
 int menu(void){
-    printf("1.- Indice de Masa Corporal \n2.- Variacion mensual del peso \n3.- Riesgo de enfermedad cardiovascular \n4.- Porcentaje de grasa corporal \n5.- Salir\nEscoja una opcion:");
+    int opcion;
+    printf("\n\n1.- Indice de Masa Corporal \n2.- Variacion mensual del peso \n3.- Riesgo de enfermedad cardiovascular \n4.- Porcentaje de grasa corporal \n5.- Salir\nEscoja una opcion:");
+    scanf("%d",&opcion);
+    fflush(stdin);
+
+    return(opcion);
 
 }
 
@@ -247,11 +262,16 @@ int menu(void){
 
 double leerDato (double min, double max){
 
+
     double scan;
     do{
         printf("Introduzca un valor real comprendido entre %.2f y %.2f \n", min, max);
         scanf("%lf", &scan);
-    }while(scan <= min || scan >= max);
+        if (scan < min || scan > max)
+        {
+            printf("ERROR: Valor fuera de rango \n");
+        }
+    }while(scan < min || scan > max);
 
     return(scan);
 
@@ -262,36 +282,77 @@ double leerDato (double min, double max){
 
    double indiceMC (double peso, double talla){
 
-       return(peso/(talla * talla))
+       return(peso/(talla * talla));
 
 }
 
 
 /* Codificación completa de pesosMes  */
 
-    pesosMes {
+void pesosMes(double pesos[VECES_PESO])
+{
+    int i;
+    for(i=0; i < VECES_PESO;i++)
+    {
+        printf("Introduce los pesos de la semana %d \n", i + 1);
+        pesos[i] = leerDato(MIN_PESO,MAX_PESO);
+        fflush(stdin);
+    }
 
 }
 
 
 /* Codificación completa de pesoMinMax  */
 
-      pesoMinMax {
-
+void pesoMinMax(const double pesos[], double *pesomin, double *pesomax)
+{
+    int i;
+    *pesomin = pesos[0];
+    *pesomax = pesos[0];
+    for(i = 0; i< VECES_PESO; i++)
+    {
+        if(pesos[i]>*pesomax)
+        {
+            *pesomax = pesos[i];
+        }
+        if(pesos[i]<*pesomin)
+        {
+            *pesomin = pesos[i];
+        }
+    }
 }
 
 
 /* Codificación completa de riesgo  */
 
-double riesgo (double ldl, double hdl, char* hayRiesgo){
-
+double riesgo (double ldl, double hdl, char *hayRiesgo)
+{
+    double riesgo = ldl/hdl;
+    if (riesgo > 3)
+    {
+        strcpy (hayRiesgo, "Hay riesgo cardiovascular");
+    }
+    else
+    {
+        strcpy (hayRiesgo,"No hay riesgo cardiovascular");
+    }
+    return(riesgo);
 }
 
 
 /* Codificación completa de grasaCorporal  */
 
-      grasaCorporal {
+double grasaCorporal(double IMC, double edad,const char sexo[])
+    {
 
+    if (strcmp(sexo,"hombre")==0)
+    {
+        return(1.2*IMC+0.23*edad -16.2);
+    }
+    else
+    {
+        return(1.2*IMC+0.23*edad -5.4);
+    }
 
 }
 
@@ -318,21 +379,74 @@ double riesgo (double ldl, double hdl, char* hayRiesgo){
 
 /** Codificación completa de procesamiento_VMP  **/
 
-void procesamiento_VMP(void){
-
+void procesamiento_VMP(void)
+{
+    double col[VECES_PESO];
+    double min;
+    double max;
+    printf("Introduzca los pesos que ha registrado este mes \n");
+    pesosMes(col);
+    pesoMinMax(col, &min, &max);
+    printf("Peso maximo = %.2f , Peso minimo = %.2f    Variacion = %.2f \n Peso primera semana: %.2f y peso ultima semana: %.2f Variacion: %.2f", max, min, max - min, col[0], col[VECES_PESO - 1], col[VECES_PESO - 1] - col[0]);
 }
 
 
 /** Codificación completa de procesamiento_REC  **/
 
 void procesamiento_REC(void){
-
+    printf("Introduce el colesterol bueno en mg/dL\n");
+    double hdl1 = leerDato(MIN_HDL, MAX_HDL);
+    printf("Introduce el colesterol malo en mg/dL\n");
+    double ldl1 = leerDato(MIN_LDL, MAX_LDL);
+    char hayriesgo[MAX_CAD];
+    double numeroriesgo = riesgo(ldl1,hdl1,&hayriesgo);
+    printf("%s %.2f", hayriesgo, numeroriesgo);
 }
 
 
 /** Codificación completa de procesamiento_PGC  **/
 
 void procesamiento_PGC(void){
+    double IMC;
+    double edad;
+    char sexo[MAX_CAD];
+    double grasa;
+
+    printf("Introduzca su IMC\n\n");
+    IMC=leerDato(MIN_IMC,MAX_IMC);
+    printf("Introduzca su edad\n\n");
+    edad=leerDato(MIN_EDAD,MAX_EDAD);
+
+    printf("Introduzca su sexo (hombre o mujer en minusculas): ");
+    scanf("%s",sexo);
+    printf("\n");
+
+
+
+    if(strcmp(sexo,"hombre")==0){
+
+
+
+        grasa = grasaCorporal(IMC,edad,sexo);
+        if(grasa<=25){
+             printf("El %% de grasa corporal es %g. Es NORMAL\n",grasa);
+        }else{
+             printf("El %% de grasa corporal es %g. Hay OBESIDAD\n",grasa);
+        }
+
+    }else if(strcmp(sexo,"mujer")==0){
+
+        grasa = grasaCorporal(IMC,edad,sexo);
+        if(grasa<=30){
+             printf("El %% de grasa corporal es %g. Es NORMAL\n",grasa);
+        }else{
+             printf("El %% de grasa corporal es %g. Hay OBESIDAD\n",grasa);
+        }
+    }else{
+        printf("ERROR. No se ha indicado el sexo correctamente\n");
+    }
+
+
 
 }
 
